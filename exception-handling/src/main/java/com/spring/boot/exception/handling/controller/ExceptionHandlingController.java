@@ -32,20 +32,10 @@ public class ExceptionHandlingController {
 		this.service = service;
 	}
 	
-	@GetMapping("/")
-	public List<Products> fetchAllProduct() {
-		return service.fetchAllProduct();
-	}
 	
 	@GetMapping("/{id}")
 	public Products fetchProductById(@Valid @PathVariable @NotBlank Long id) {
-		service.fetchProductById(id);
-		return null;
-	}
-	
-	@GetMapping("/{name}")
-	public Products fetchProductByName(@Valid @PathVariable @NotBlank String name) {
-		return service.fetchProductByName(name);
+		return service.fetchProductById(id);
 	}
 	
 	@PostMapping("/")
@@ -61,6 +51,16 @@ public class ExceptionHandlingController {
 			return new ProductResponse("500",t.getLocalizedMessage(), ProductResponse.ResponseResult.FAILED);
 		}
 	}
+	/*
+	@GetMapping("/")
+	public List<Products> fetchAllProduct() {
+		return service.fetchAllProduct();
+	}
+	
+	@GetMapping("/{name}")
+	public Products fetchProductByName(@Valid @PathVariable @NotBlank String name) {
+		return service.fetchProductByName(name);
+	}
 	
 	@GetMapping("/{id}")
 	public Products deleteProduct(@Valid @PathVariable @NotBlank Long id) {
@@ -68,6 +68,6 @@ public class ExceptionHandlingController {
 		return null;
 	}
 	
-	
+	*/
 
 }

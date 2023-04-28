@@ -1,8 +1,9 @@
 package com.spring.boot.exception.handling.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,36 +15,37 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.boot.exception.handling.entity.Products;
 import com.spring.boot.exception.handling.entity.response.ProductResponse;
-import com.spring.boot.exception.handling.repository.ProductRespository;
+import com.spring.boot.exception.handling.service.ExceptionHandlingService;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 
 @RestController
 @RequestMapping("/product")
-public class ExceptionHandlingControlelr {
+public class ExceptionHandlingController {
 	
-	final static Logger log = LoggerFactory.getLogger(ExceptionHandlingControlelr.class);
+	final static Logger log = LoggerFactory.getLogger(ExceptionHandlingController.class);
 	
-	@Autowired
-	ProductRespository repository;
+	ExceptionHandlingService service;
+	
+	public ExceptionHandlingController(ExceptionHandlingService service) {
+		this.service = service;
+	}
 	
 	@GetMapping("/")
-	public Products fetchAllProduct() {
-		repository.findByAllProducts();
-		return null;
+	public List<Products> fetchAllProduct() {
+		return service.fetchAllProduct();
 	}
 	
 	@GetMapping("/{id}")
 	public Products fetchProductById(@Valid @PathVariable @NotBlank Long id) {
-		repository.findByProductId(id);
+		service.fetchProductById(id);
 		return null;
 	}
 	
 	@GetMapping("/{name}")
 	public Products fetchProductByName(@Valid @PathVariable @NotBlank String name) {
-		repository.findByProductName(name);
-		return null;
+		return service.fetchProductByName(name);
 	}
 	
 	@PostMapping("/")
@@ -51,7 +53,7 @@ public class ExceptionHandlingControlelr {
 	public ProductResponse addProduct(@RequestBody Products product) {
 		log.info("Request to add product {}",product);
 		try {
-			repository.addProduct(product);
+			service.addProduct(product);
 			return  new ProductResponse("500",null , ProductResponse.ResponseResult.CREATED);
 			
 		}catch(Throwable t) {
@@ -60,9 +62,9 @@ public class ExceptionHandlingControlelr {
 		}
 	}
 	
-	@GetMapping("/")
+	@GetMapping("/{id}")
 	public Products deleteProduct(@Valid @PathVariable @NotBlank Long id) {
-		repository.deleteProduct(id);
+		service.deleteProduct(id);
 		return null;
 	}
 	

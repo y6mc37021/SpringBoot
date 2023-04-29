@@ -1,7 +1,5 @@
 package com.spring.boot.exception.handling.controller;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -13,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.boot.exception.handling.entity.Products;
+import com.spring.boot.exception.handling.entity.Product;
 import com.spring.boot.exception.handling.entity.response.ProductResponse;
 import com.spring.boot.exception.handling.service.ExceptionHandlingService;
 
@@ -34,17 +32,19 @@ public class ExceptionHandlingController {
 	
 	
 	@GetMapping("/{id}")
-	public Products fetchProductById(@Valid @PathVariable @NotBlank Long id) {
-		return service.fetchProductById(id);
+	public Product fetchProductById(@Valid @PathVariable @NotBlank Long id) {
+		return service.getProductById(id);
+		
 	}
 	
 	@PostMapping("/")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ProductResponse addProduct(@RequestBody Products product) {
+	public ProductResponse addProduct(@RequestBody Product product) {
 		log.info("Request to add product {}",product);
 		try {
 			service.addProduct(product);
-			return  new ProductResponse("500",null , ProductResponse.ResponseResult.CREATED);
+			log.info("Added product {} is",product);
+			return  new ProductResponse("201",null , ProductResponse.ResponseResult.CREATED);
 			
 		}catch(Throwable t) {
 			log.error("Error While Adding Product {}", product);

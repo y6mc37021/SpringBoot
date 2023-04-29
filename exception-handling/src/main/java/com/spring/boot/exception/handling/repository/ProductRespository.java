@@ -1,18 +1,19 @@
 package com.spring.boot.exception.handling.repository;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.spring.boot.exception.handling.entity.Products;
+import com.spring.boot.exception.handling.entity.Product;
 
-public interface ProductRespository extends JpaRepository<Products, Long> {
+//public interface ProductRespository extends JpaRepository<Products, Long> {
+public interface ProductRespository extends JpaRepository<Product, Long>{
 	
-	public Optional<Products> findByProductId(Long productId);
+	/*
 	public List<Products> findByAllProducts();
 	public Products findByProductName(String productName);
-	public void addProduct(Products product);
-	public void deleteProduct(Long productId);
+	public void deleteProduct(Long productId);*/
+	public Optional<Product> findByProductId(Long id);
+	public Product save(Product product);
 
 }

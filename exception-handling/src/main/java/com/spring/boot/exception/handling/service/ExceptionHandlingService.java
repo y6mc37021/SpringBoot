@@ -1,17 +1,11 @@
 package com.spring.boot.exception.handling.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import com.spring.boot.exception.handling.entity.Products;
+import com.spring.boot.exception.handling.entity.Product;
 import com.spring.boot.exception.handling.repository.ProductRespository;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ExceptionHandlingService {
@@ -23,26 +17,29 @@ public class ExceptionHandlingService {
 		this.repository = repository;
 	}
 	
-	public List<Products> fetchAllProduct() {
+	/*public List<Products> fetchAllProduct() {
 		return repository.findByAllProducts();
-	}
-	
-	public Optional<Products> fetchProductById(@Valid @PathVariable @NotBlank Long id) {
-		
-		return repository.findByProductId(id);
 	}
 	
 	public Products fetchProductByName(@Valid @PathVariable @NotBlank String name) {
 		return repository.findByProductName(name);
 	}
 	
-	public void addProduct(@RequestBody Products product) {
-		repository.addProduct(product);
-	}
-	
 	public Products deleteProduct(@Valid @PathVariable @NotBlank Long id) {
 		repository.deleteProduct(id);
 		return null;
+	}*/
+	
+	public Product getProductById(Long id) {
+	
+	//Optional<Products> product = return repository.findByProductId(id);
+	//Products product = repository.findById(id).orElse(new product()); -->way-1
+	//Products product = repository.findById(id).orElse(null); -->way-2
+	return repository.findByProductId(id)
+	        .orElseThrow(() -> new EntityNotFoundException());
+}
+	public Product addProduct(Product product) {
+		return repository.save(product);
 	}
 	
 	

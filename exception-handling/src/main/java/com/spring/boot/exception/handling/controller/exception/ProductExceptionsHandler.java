@@ -1,20 +1,24 @@
 package com.spring.boot.exception.handling.controller.exception;
 
-public class ProductExceptionsHandler extends RuntimeException{
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+@ControllerAdvice
+public class ProductExceptionsHandler{
 	
 	
+	@ExceptionHandler(value = {ProductExceptionList.class})
+    public ResponseEntity<Object> handleProductNotFoundException
+            (ProductExceptionList productExceptionList)
+    {
+		ProductExceptions productException = new ProductExceptions(
+				productExceptionList.getMessage(),
+				productExceptionList.getCause(),
+                HttpStatus.NOT_FOUND
+        );
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7586886526557189847L;
-
-	public ProductExceptionsHandler(String message) {
-        super(message);
+        return new ResponseEntity<>(productException, HttpStatus.NOT_FOUND);
     }
-
-    public ProductExceptionsHandler(String message, Throwable cause) {
-        super(message, cause);
-    }
-
 }
